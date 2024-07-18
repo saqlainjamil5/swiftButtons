@@ -67,3 +67,75 @@ class ViewController: UIViewController {
         toggleButton.backgroundColor = buttonColor
     }
 }
+```
+### 2. Pressable Button Style
+The ViewController contains a button that provides a pressed effect with a scale animation.
+
+```swift
+import UIKit
+
+class ViewController: UIViewController {
+    private let pressableButton = UIButton()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+
+        setupPressableButton()
+    }
+
+    private func setupPressableButton() {
+        pressableButton.setTitle(" Press Me ", for: .normal)
+        pressableButton.setTitleColor(.white, for: .normal)
+        pressableButton.backgroundColor = .red
+        pressableButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        pressableButton.layer.cornerRadius = 8
+        pressableButton.frame = CGRect(x: 50, y: 200, width: 300, height: 50)
+        pressableButton.addTarget(self, action: #selector(pressableButtonPressed), for: .touchUpInside)
+        pressableButton.addTarget(self, action: #selector(pressableButtonTouchDown), for: .touchDown)
+
+        view.addSubview(pressableButton)
+    }
+
+    @objc private func pressableButtonPressed() {
+        UIView.animate(withDuration: 0.3) {
+            self.pressableButton.transform = .identity
+            self.pressableButton.backgroundColor = .red
+        }
+    }
+
+    @objc private func pressableButtonTouchDown() {
+        UIView.animate(withDuration: 0.3) {
+            self.pressableButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            self.pressableButton.backgroundColor = .gray
+        }
+    }
+}
+```
+### 3. Loading Button Style
+The ViewController contains a button with a loading indicator (Activity Indicator).
+
+```swift
+
+import UIKit
+
+class ViewController: UIViewController {
+    private let loadingButton = UIButton()
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+
+        setupLoadingButton()
+    }
+
+    private func setupLoadingButton() {
+        activityIndicator.color = .white
+        activityIndicator.startAnimating()
+
+        loadingButton.setTitle("Loading...", for: .normal)
+        loadingButton.setTitleColor(.
+```
+### Contributing
+Contributions are welcome! Please fork the repository and submit a pull request.
