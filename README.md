@@ -13,11 +13,18 @@ This repository contains three custom button implementations in UIKit, demonstra
 ### 1. **Toggle Button Color**
 A button that toggles its background color between yellow and dark golden when pressed.
 
+https://github.com/user-attachments/assets/bc47161a-a5da-405c-9713-c7cbf223e4a1
+
 ### 2. **Pressable Button Style**
 Providing a pressed effect with a scale animation.
 
+https://github.com/user-attachments/assets/46a7e0bc-610a-419b-bac8-9406d3fa9cd4
+
+
 ### 3. **Loading Button Style**
 A button with a loading indicator (Activity Indicator).
+
+https://github.com/user-attachments/assets/917afef9-1921-4ea6-a902-c74ad432e659
 
 ## Installation
 
