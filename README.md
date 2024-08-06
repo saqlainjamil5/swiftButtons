@@ -1,6 +1,7 @@
-# Swift Buttons
+# Edit User Data App
 
-This repository contains three custom button implementations in UIKit, demonstrating different styles and animations for buttons.
+This repository contains an iOS application demonstrating a simple user data management interface using UserDefaults. The app allows users to edit and save their profile information, which is then displayed on the main screen.
+
 
 ## Table of Contents
 - [Overview](#overview)
@@ -10,138 +11,122 @@ This repository contains three custom button implementations in UIKit, demonstra
 
 ## Overview
 
-### 1. **Toggle Button Color**
-A button that toggles its background color between yellow and dark golden when pressed.
+### 1. **Home Screen**
+The Home screen displays the user's profile information, which can be edited by navigating to the Edit screen.
 
-https://github.com/user-attachments/assets/9bb0cd65-6a01-44fc-8c20-f836bade854d
+<img width="429" alt="Screenshot 2024-08-06 at 10 10 36 AM" src="https://github.com/user-attachments/assets/406d9ad2-c800-4b46-9ce4-c4f2d01b4746">
 
-### 2. **Pressable Button Style**
-Providing a pressed effect with a scale animation.
 
-https://github.com/user-attachments/assets/c44c087e-2e59-4836-b22e-6ee7b2a6761b
+### 2. **Edit Screen**
+A screen where users can edit their profile information, such as name, email, phone number, and additional details. Once the changes are saved, the user is navigated back to the main screen with the updated information.
 
-### 3. **Loading Button Style**
-A button with a loading indicator (Activity Indicator).
+<img width="429" alt="Screenshot 2024-08-06 at 10 11 30 AM" src="https://github.com/user-attachments/assets/29c7fd83-d6dc-4c91-93f6-0cb6d158651e">
 
-https://github.com/user-attachments/assets/33bcc1f4-7916-4080-b9d5-ff3cd8357d0e
+
 
 ## Installation
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/saqlainjamil5/swiftbutton.git
+    git clone https://github.com/saqlainjamil5/edituserdataapp.git
     ```
 2. Open the project in Xcode:
     ```sh
-    cd swiftbutton
-    open swiftbutton.xcodeproj
+    cd edituserdataapp
+    open edituserdataapp.xcodeproj
     ```
 
 ## Usage
 
-### 1. **Toggle Button Color**
-The `ViewController` contains a button that toggles its color between yellow and dark golden.
+### 1. **Home Screen**
+The MainVC displays the user's profile information:
 
 ```swift
-import UIKit
+iimport UIKit
 
-class ViewController: UIViewController {
-    private var buttonColor: UIColor = .yellow
-    private let toggleButton = UIButton()
+class MainVC: UIViewController {
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var phoneLabel: UILabel!
+    @IBOutlet weak var userDetailsLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-
-        setupToggleButton()
+        loadUserData()
     }
 
-    private func setupToggleButton() {
-        toggleButton.setTitle(" Press Me ", for: .normal)
-        toggleButton.setTitleColor(.white, for: .normal)
-        toggleButton.backgroundColor = buttonColor
-        toggleButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        toggleButton.layer.cornerRadius = 15
-        toggleButton.frame = CGRect(x: 50, y: 100, width: 300, height: 50)
-        toggleButton.addTarget(self, action: #selector(toggleButtonPressed), for: .touchUpInside)
+    private func loadUserData() {
+        let defaults = UserDefaults.standard
 
-        view.addSubview(toggleButton)
-    }
-
-    @objc private func toggleButtonPressed() {
-        buttonColor = (buttonColor == .yellow) ? UIColor(red: 184/255, green: 134/255, blue: 11/255, alpha: 1) : .yellow
-        toggleButton.backgroundColor = buttonColor
+        firstNameLabel.text = defaults.string(forKey: "firstName")
+        emailLabel.text = defaults.string(forKey: "email")
+        phoneLabel.text = defaults.string(forKey: "phone")
+        userDetailsLabel.text = defaults.string(forKey: "userDetails")
     }
 }
+
 ```
-### 2. Pressable Button Style
-The ViewController contains a button that provides a pressed effect with a scale animation.
+### 2. Edit Screen
+The EditVC allows the user to edit and save profile information:
 
 ```swift
 import UIKit
 
-class ViewController: UIViewController {
-    private let pressableButton = UIButton()
+class EditVC: UIViewController {
+
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var phoneTextField: UITextField!
+    @IBOutlet weak var userDetailsTextField: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-
-        setupPressableButton()
+        loadUserData()
     }
 
-    private func setupPressableButton() {
-        pressableButton.setTitle(" Press Me ", for: .normal)
-        pressableButton.setTitleColor(.white, for: .normal)
-        pressableButton.backgroundColor = .red
-        pressableButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        pressableButton.layer.cornerRadius = 8
-        pressableButton.frame = CGRect(x: 50, y: 200, width: 300, height: 50)
-        pressableButton.addTarget(self, action: #selector(pressableButtonPressed), for: .touchUpInside)
-        pressableButton.addTarget(self, action: #selector(pressableButtonTouchDown), for: .touchDown)
-
-        view.addSubview(pressableButton)
+    private func loadUserData() {
+        let userData = fetchUserData()
+        populateFields(with: userData)
     }
 
-    @objc private func pressableButtonPressed() {
-        UIView.animate(withDuration: 0.3) {
-            self.pressableButton.transform = .identity
-            self.pressableButton.backgroundColor = .red
-        }
+    private func fetchUserData() -> [String: String?] {
+        let defaults = UserDefaults.standard
+
+        return [
+            "firstName": defaults.string(forKey: "firstName"),
+            "email": defaults.string(forKey: "email"),
+            "phone": defaults.string(forKey: "phone"),
+            "userDetails": defaults.string(forKey: "userDetails")
+        ]
     }
 
-    @objc private func pressableButtonTouchDown() {
-        UIView.animate(withDuration: 0.3) {
-            self.pressableButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            self.pressableButton.backgroundColor = .gray
-        }
+    private func populateFields(with userData: [String: String?]) {
+        firstNameTextField.text = userData["firstName"] ?? ""
+        emailTextField.text = userData["email"] ?? ""
+        phoneTextField.text = userData["phone"] ?? ""
+        userDetailsTextField.text = userData["userDetails"] ?? ""
+    }
+
+    private func saveUserData() {
+        let defaults = UserDefaults.standard
+
+        defaults.set(firstNameTextField.text, forKey: "firstName")
+        defaults.set(emailTextField.text, forKey: "email")
+        defaults.set(phoneTextField.text, forKey: "phone")
+        defaults.set(userDetailsTextField.text, forKey: "userDetails")
+    }
+
+    @IBAction func saveProfile(_ sender: UIButton) {
+        saveUserData()
+        navigateBack()
+    }
+
+    private func navigateBack() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
+
 ```
-### 3. Loading Button Style
-The ViewController contains a button with a loading indicator (Activity Indicator).
 
-```swift
-
-import UIKit
-
-class ViewController: UIViewController {
-    private let loadingButton = UIButton()
-    private let activityIndicator = UIActivityIndicatorView(style: .medium)
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-
-        setupLoadingButton()
-    }
-
-    private func setupLoadingButton() {
-        activityIndicator.color = .white
-        activityIndicator.startAnimating()
-
-        loadingButton.setTitle("Loading...", for: .normal)
-        loadingButton.setTitleColor(.
-```
 ### Contributing
 Contributions are welcome! Please fork the repository and submit a pull request.
